@@ -1,0 +1,119 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+#gameBoard {
+  width: 420px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  gap: 10px;
+  justify-content: center;
+}
+
+/*  CARD OUTER BOX */
+.card {
+  width: 85px;
+  height: 85px;
+  cursor: pointer;
+  perspective: 600px;
+}
+
+
+/*  CARD INNER (THE PART THAT ROTATES)  */
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  border-radius: 10px;
+}
+
+/*
+  When jQuery adds class "flipped" to .card,this rule rotates .card-inner by 180 degrees.
+*/
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+
+/*
+  Both faces are  on top of each other using position: absolute.
+  Only one is visible at a time due to backface-visibility: hidden.
+
+  backface-visibility: hidden
+    → hides a face when it is rotated away from the viewer.
+    → card-back  is visible at 0°,   hidden at 180°
+    → card-front is hidden  at 0°,   visible at 180°
+*/
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+}
+
+/* dark side, shown before flipping */
+.card-back {
+  background-color: #3a3a5c;
+  font-size: 28px;
+  color: #7a7aaa;
+  border: 2px solid #5a5a8c;
+}
+
+/* white side, shows the emoji after flip */
+/*
+  transform: rotateY(180deg): pre-rotates the front face so it starts facing AWAY.
+*/
+.card-front {
+  background-color: #ffffff;
+  font-size: 40px;
+  border: 2px solid #ccc;
+  transform: rotateY(180deg);
+}
+
+
+/*jQuery adds class "matched" to cards that have been paired;;
+  This gives them a green glow so the player can see which are done.
+*/
+.card.matched .card-inner {
+  box-shadow: 0 0 0 3px green;
+}
+
+.card.matched .card-front {
+  background-color: #e6ffe6;
+}
+
+/*WIN MESSAGE is hidden by default;jQuery calls .fadeIn() on it when all pairs matched.*/
+#winMessage {
+  display: none;
+  font-size: 26px;
+  color: green;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background: #3a3a5c;
+  color: white;
+}
